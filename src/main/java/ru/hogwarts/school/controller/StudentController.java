@@ -22,7 +22,7 @@ public class StudentController {
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<Student> getStudentInfo(@PathVariable Long id) {
+    public ResponseEntity<Student> getStudentInfo(@PathVariable long id) {
         Student student = studentService.findStudent(id);
         if (student == null) {
             return ResponseEntity.notFound().build();
@@ -32,35 +32,41 @@ public class StudentController {
 
     @PostMapping
     public Student createStudent(@RequestBody Student student) {
-        return studentService.addStudent(student);
+        Student createSt = studentService.addStudent(student);
+        return ResponseEntity.ok(createSt).getBody();
     }
 
     @PutMapping
     public ResponseEntity<Student> editStudent(@RequestBody Student student) {
-        Student foundStudent = studentService.editStudent( student);
+        Student foundStudent = studentService.editStudent(student);
         if (foundStudent == null) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+            return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(foundStudent);
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity<Void> deleteStudent(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteStudent(@PathVariable long id) {
         studentService.deleteStudent(id);
         return ResponseEntity.ok().build();
     }
 
+    @GetMapping
+    public ResponseEntity<Collection<Student>> getAllStudent() {
+        return ResponseEntity.ok(studentService.getAll());
+    }
+
 //    @GetMapping
-//        public ResponseEntity<Collection<Student>> getAllStudent(@PathVariable Long id) {
-//            return ResponseEntity.ok(Collections.singleton(studentService.getAll(id)));
+//        public ResponseEntity<Collection<Student>> getAllStudent() {
+//            return ResponseEntity.ok(Collections.singleton((Student) studentService.getAll()));
 //        }
 
-    @GetMapping
-    public ResponseEntity<Collection<Student>> findStudents(@RequestParam(required = false) int age) {
-        if (age > 0) {
-            return ResponseEntity.ok(studentService.findByAge(age));
-        }
-        return ResponseEntity.ok(Collections.emptyList());
-    }
+//    @GetMapping
+//    public ResponseEntity<Collection<Student>> findStudents(@RequestParam(required = false) int age) {
+//        if (age > 0) {
+//            return ResponseEntity.ok(studentService.findByAge(age));
+//        }
+//        return ResponseEntity.ok(Collections.emptyList());
+//    }
 
 }

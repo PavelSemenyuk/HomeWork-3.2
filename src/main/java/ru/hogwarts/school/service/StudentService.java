@@ -1,54 +1,45 @@
 package ru.hogwarts.school.service;
 
 import org.springframework.stereotype.Service;
+import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.model.Student;
+import ru.hogwarts.school.repositories.StudentRepository;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Optional;
 
 @Service
 public class StudentService {
-    private final HashMap<Long, Student> studentMap = new HashMap<>();
-    private long count = 1;
+
+    private final StudentRepository studentRepository;
+
+    public StudentService(StudentRepository studentRepository) {
+        this.studentRepository = studentRepository;
+    }
 
     public Student addStudent(Student student) {
-        student.setId(count++);
-        studentMap.put(student.getId(), student);
-        return student;
-
+        return studentRepository.save(student);
     }
 
     public Student findStudent(long id) {
-        return studentMap.get(id);
+        Optional<Student> studentForFind = studentRepository.findById(id);
+        Student studentFind = studentForFind.get();
+        studentFind.setName();
+        studentFind.setAge();
+        return studentFind;
     }
 
     public Student editStudent(Student student) {
-        if (!studentMap.containsKey(student.getId())) {
-            return null;
-        }
-        studentMap.put(student.getId(), student);
-        return student;
+       return  studentRepository.save(student);
     }
 
-    public Student deleteStudent(long id) {
-        return studentMap.remove(id);
+    public void deleteStudent(long id) {
+        studentRepository.deleteById(id);
     }
 
-    public Student getAll(Long id) {
-        return studentMap.get(id);
-
+    public Collection<Student> getAll() {
+        return studentRepository.findAll();
     }
 
-    public Collection<Student> findByAge(int age) {
-        ArrayList<Student> result = new ArrayList<>();
-        for (Student student : studentMap.values()) {
-            if (student.getAge() == age) {
-                result.add(student);
-            }
-        }
-        return result;
-
-    }
 }
