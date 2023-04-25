@@ -24,10 +24,7 @@ public class StudentService {
 
     public Student findStudent(long id) {
         Optional<Student> studentForFind = studentRepository.findById(id);
-        Student studentFind = studentForFind.get();
-        studentFind.setName();
-        studentFind.setAge();
-        return studentFind;
+        return studentForFind.get();
     }
 
     public Student editStudent(Student student) {
