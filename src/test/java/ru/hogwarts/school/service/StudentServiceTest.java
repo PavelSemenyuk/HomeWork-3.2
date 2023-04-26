@@ -1,4 +1,4 @@
-package ru.hogwarts.school;
+package ru.hogwarts.school.service;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -13,6 +13,7 @@ import ru.hogwarts.school.repositories.StudentRepository;
 import ru.hogwarts.school.service.StudentService;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import static org.mockito.Mockito.when;
@@ -27,7 +28,7 @@ public class StudentServiceTest {
     StudentRepository studentRepository;
 
     @Test
-    public void addStudentTest(){
+    public void addStudentTest() {
         //вводные
         Student student = new Student(1, "Ivan", 23);
 
@@ -43,7 +44,7 @@ public class StudentServiceTest {
 
 
     @Test
-    public void editStudentTest(){
+    public void editStudentTest() {
         //вводные
         Student student = new Student(1, "Ivan", 23);
 
@@ -58,9 +59,9 @@ public class StudentServiceTest {
     }
 
     @Test
-    public void deleteStudentTest(){
+    public void deleteStudentTest() {
         //вводные
-        Long id=2L;
+        Long id = 2L;
 
         //действие
         studentService.deleteStudent(id);
@@ -73,7 +74,7 @@ public class StudentServiceTest {
 
 
     @Test
-    public void getAllTest(){
+    public void getAllTest() {
         //вводные
         List<Student> studentCollection = new ArrayList<>();
         Student student2 = new Student(1, "Ivan", 23);
@@ -91,12 +92,27 @@ public class StudentServiceTest {
         Mockito.verify(studentRepository).findAll();
     }
 
+    @Test
+    public void findByAgeBetweenTest() {
+        //вводные
+        List<Student> studentCollection = new ArrayList<>();
+        Student student2 = new Student(1, "Ivan", 23);
+        Student student3 = new Student(1, "Petr", 33);
+        studentCollection.add(student2);
+        studentCollection.add(student3);
+        int age = 20;
+        int age2 = 50;
 
+        //действие
+        when(studentRepository.findByAgeBetween(age, age2)).thenReturn(studentCollection);
 
+        // проверка
+        Assertions.assertEquals(studentCollection, studentService.findByAgeBetween(age, age2));
 
+        // проверка мока, что вызывался метод сейв
+        Mockito.verify(studentRepository).findByAgeBetween(age, age2);
 
-
-
+    }
 
 
 //    public static Stream<Arguments> argument_addStudent() {

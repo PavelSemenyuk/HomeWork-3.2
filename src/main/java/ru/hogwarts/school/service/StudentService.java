@@ -5,7 +5,6 @@ import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.repositories.StudentRepository;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Optional;
 
@@ -23,12 +22,16 @@ public class StudentService {
     }
 
     public Student findStudent(long id) {
+
         Optional<Student> studentForFind = studentRepository.findById(id);
+        if(studentForFind.isEmpty()){
+            throw new RuntimeException("Нет такого студента");
+        }
         return studentForFind.get();
     }
 
     public Student editStudent(Student student) {
-       return  studentRepository.save(student);
+        return studentRepository.save(student);
     }
 
     public void deleteStudent(long id) {
@@ -38,5 +41,13 @@ public class StudentService {
     public Collection<Student> getAll() {
         return studentRepository.findAll();
     }
+
+    public Collection<Student> findByAgeBetween(int age, int age2) {
+        return studentRepository.findByAgeBetween(age, age2);
+    }
+
+//    public Collection<Faculty> getStudentFaculty(long id){
+//        return studentRepository.f
+//    }
 
 }

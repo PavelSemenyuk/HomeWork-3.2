@@ -2,6 +2,7 @@ package ru.hogwarts.school.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.model.Student;
@@ -9,7 +10,7 @@ import ru.hogwarts.school.service.FacultyService;
 
 import java.util.Collection;
 import java.util.Collections;
-
+//@Component
 @RestController
 @RequestMapping(path = "/faculty")
 public class FacultyController {
@@ -47,16 +48,19 @@ public class FacultyController {
         facultyService.deleteFaculty(id);
         return ResponseEntity.ok().build();
     }
+
     @GetMapping
     public ResponseEntity<Collection<Faculty>> findFaculties(@RequestParam(required = false) String color) {
         if (color != null && !color.isBlank()) {
-            return ResponseEntity.ok(facultyService.findByColor());
+            return ResponseEntity.ok(facultyService.findByColor(color));
         }
-        return ResponseEntity.ok(Collections.emptyList());
+        return ResponseEntity.ok(facultyService.getAll());
     }
 
-//    @GetMapping
-//    public ResponseEntity<Collection<Faculty>> getAllFaculties() {
-//        return ResponseEntity.ok(facultyService.getAll());
-//    }
+
+    @GetMapping("/{id}/student")
+    public ResponseEntity <Collection<Student>> findFacultyStudent(@PathVariable long id){
+        return ResponseEntity.ok(facultyService.findFaculty(id).getStudents());
+    }
+
 }

@@ -1,4 +1,4 @@
-package ru.hogwarts.school;
+package ru.hogwarts.school.service;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -29,7 +29,7 @@ public class FacultyServiceTest {
     FacultytRepository facultytRepository;
 
     @Test
-    public void addStudentTest(){
+    public void addStudentTest() {
         //вводные
         Faculty faculty = new Faculty(2L, "Ivan", "красный");
 
@@ -45,7 +45,7 @@ public class FacultyServiceTest {
 
 
     @Test
-    public void editStudentTest(){
+    public void editStudentTest() {
         //вводные
         Faculty faculty = new Faculty(1L, "Ivan", "розовый");
 
@@ -60,9 +60,9 @@ public class FacultyServiceTest {
     }
 
     @Test
-    public void deleteStudentTest(){
+    public void deleteStudentTest() {
         //вводные
-        Long id=2L;
+        Long id = 2L;
 
         //действие
         facultyService.deleteFaculty(id);
@@ -75,7 +75,7 @@ public class FacultyServiceTest {
 
 
     @Test
-    public void getAllTest(){
+    public void getAllTest() {
         //вводные
         List<Faculty> facultyCollection = new ArrayList<>();
         Faculty faculty2 = new Faculty(1L, "Ivan", "синий");
@@ -93,6 +93,22 @@ public class FacultyServiceTest {
         Mockito.verify(facultytRepository).findAll();
     }
 
+    @Test
+    public void findByColorTest() {
+        //вводные
+        List<Faculty> facultyCollection = new ArrayList<>();
+        Faculty faculty2 = new Faculty(1L, "Ivan", "синий");
+        facultyCollection.add(faculty2);
+
+        //действие
+        when(facultytRepository.findByColor(faculty2.getColor())).thenReturn(facultyCollection);
+
+        // проверка
+        Assertions.assertEquals(facultyCollection, facultyService.findByColor(faculty2.getColor()));
+
+        // проверка мока, что вызывался метод сейв
+        Mockito.verify(facultytRepository).findByColor(faculty2.getColor());
+    }
 
 
 }

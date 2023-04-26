@@ -37,10 +37,22 @@ public class FacultyService {
         facultytRepository.deleteById(id);
     }
 
-    public Collection<Faculty> findByColor() {
-        return facultytRepository.findAll();
-    }
     public Collection<Faculty> getAll() {
         return facultytRepository.findAll();
     }
+    public Collection<Faculty> findByColor(String color) {
+        return facultytRepository.findByColor(color);
+    }
+
+
+
+
+
+//    public Faculty findByName(String name){
+//        return facultytRepository.findByNameContainsIgnoreCase(name);
+//    }
+//
+//    public Collection<Faculty> findByIdIn(long id){
+//        return facultytRepository.findByIdIs(id);
+//    }
 }
