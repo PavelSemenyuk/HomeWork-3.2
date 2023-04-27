@@ -1,34 +1,58 @@
 package ru.hogwarts.school.service;
 
 import org.springframework.stereotype.Service;
+import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.model.Student;
+import ru.hogwarts.school.repositories.FacultytRepository;
+import ru.hogwarts.school.repositories.StudentRepository;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class FacultyService {
-    private final Map<Long, Student> facultyMap =new HashMap<>();
-    private long count=0;
 
-    public Student addFaculty(Student student){
-        student.setId(count++);
-        facultyMap.put(student.getId(),student);
-        return student;
+  private final FacultytRepository facultytRepository;
 
+    public FacultyService(FacultytRepository facultytRepository) {
+        this.facultytRepository = facultytRepository;
     }
 
-    public Student findFaculty(long id){
-        return facultyMap.get(id);
+    public Faculty addFaculty(Faculty faculty) {
+        return facultytRepository.save(faculty);
     }
-    public Student editFaculty(Student student){
-        if (!facultyMap.containsKey(student.getId())){
-            return null;
-        }
-        facultyMap.put(student.getId(), student);
-        return student;
+
+    public Faculty findFaculty(long id) {
+        Optional<Faculty> facultyForFind = facultytRepository.findById(id);
+        Faculty facultyFind = facultyForFind.get();
+        facultyFind.setName();
+        facultyFind.setColor();
+        return facultyFind;
     }
-    public Student deleteFaculty(long id){
-        return facultyMap.remove(id);
+
+    public Faculty editFaculty(Faculty faculty) {
+        return facultytRepository.save(faculty);
     }
+
+    public void deleteFaculty(long id) {
+        facultytRepository.deleteById(id);
+    }
+
+    public Collection<Faculty> getAll() {
+        return facultytRepository.findAll();
+    }
+    public Collection<Faculty> findByColor(String color) {
+        return facultytRepository.findByColor(color);
+    }
+
+
+
+
+
+//    public Faculty findByName(String name){
+//        return facultytRepository.findByNameContainsIgnoreCase(name);
+//    }
+//
+//    public Collection<Faculty> findByIdIn(long id){
+//        return facultytRepository.findByIdIs(id);
+//    }
 }
