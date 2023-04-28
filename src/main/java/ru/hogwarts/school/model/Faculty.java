@@ -37,14 +37,14 @@ public class Faculty {
     }
 
     public void setId(Long id) {
-        this.id = id;
+        this.id = this.id;
     }
 
     public String getName() {
         return name;
     }
 
-    public void setName() {
+    public void setName(String name) {
         this.name = name;
     }
 
@@ -52,8 +52,8 @@ public class Faculty {
         return color;
     }
 
-    public void setColor() {
-        this.color = color;
+    public void setColor(String color) {
+        this.color = this.color;
     }
 
     @Override

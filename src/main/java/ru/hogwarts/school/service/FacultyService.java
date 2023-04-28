@@ -2,9 +2,7 @@ package ru.hogwarts.school.service;
 
 import org.springframework.stereotype.Service;
 import ru.hogwarts.school.model.Faculty;
-import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.repositories.FacultytRepository;
-import ru.hogwarts.school.repositories.StudentRepository;
 
 import java.util.*;
 
@@ -23,10 +21,10 @@ public class FacultyService {
 
     public Faculty findFaculty(long id) {
         Optional<Faculty> facultyForFind = facultytRepository.findById(id);
-        Faculty facultyFind = facultyForFind.get();
-        facultyFind.setName();
-        facultyFind.setColor();
-        return facultyFind;
+        if(facultyForFind.isEmpty()){
+            throw new RuntimeException("Нет такого факультета");
+        }
+        return facultyForFind.get();
     }
 
     public Faculty editFaculty(Faculty faculty) {
