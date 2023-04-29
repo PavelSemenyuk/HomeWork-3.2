@@ -10,12 +10,11 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.repositories.StudentRepository;
-import ru.hogwarts.school.service.StudentService;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ContextConfiguration(classes = {StudentService.class})
@@ -114,5 +113,43 @@ public class StudentServiceTest {
 
     }
 
+
+    @Test
+    public void getAllCountTest() {
+        long count =2;
+
+        when(studentRepository.count()).thenReturn(count);
+
+        long actualStudents = studentService.getAllCount();
+
+        Assertions.assertEquals(count,actualStudents);
+        verify(studentRepository).count();
+
+    }
+    @Test
+    public void getAverageAgeTest() {
+        double age = 10;
+
+        when(studentRepository.getAverageAge()).thenReturn(age);
+
+        double actualAge = studentService.getAverageAge();
+        Assertions.assertEquals(age, actualAge);
+        verify(studentRepository).getAverageAge();
+
+    }
+
+    @Test
+    public void getStudentLastFaveTest() {
+        Student student1 = new Student(29,"swdsd", 33);
+        Student student2 = new Student(66,"4fgfg", 90);
+
+        List<Student> students = List.of(student1,student2);
+
+        when(studentRepository.getStudentLastFave()).thenReturn(students);
+
+        List<Student> actualStudent = studentService.getStudentLastFave();
+        Assertions.assertEquals(students, actualStudent);
+        verify(studentRepository).getStudentLastFave();
+    }
 
 }
