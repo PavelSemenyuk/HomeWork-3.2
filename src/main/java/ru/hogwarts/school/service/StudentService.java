@@ -48,9 +48,9 @@ public class StudentService {
     }
 
 
+
     public long getAllCount(){
         return  studentRepository.count();
-
     }
 
     public double getAverageAge(){

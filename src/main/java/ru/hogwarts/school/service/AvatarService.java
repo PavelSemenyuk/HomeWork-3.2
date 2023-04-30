@@ -26,7 +26,7 @@ public class AvatarService {
     private String avatarsDir;
     private final StudentRepository studentRepository;
     private final AvatarRepository avatarRepository;
-    private StudentService studentService;
+    private final StudentService studentService;
 
     public AvatarService(StudentRepository studentRepository, AvatarRepository avatarRepository, StudentService studentService) {
         this.studentRepository = studentRepository;

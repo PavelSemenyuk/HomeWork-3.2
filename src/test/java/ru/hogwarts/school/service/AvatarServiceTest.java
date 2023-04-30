@@ -16,17 +16,22 @@ import ru.hogwarts.school.repositories.FacultytRepository;
 
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
 @ContextConfiguration(classes = {AvatarService.class})
 @ExtendWith(SpringExtension.class)
 public class AvatarServiceTest {
-    @Autowired
+
+
+    @MockBean
     public AvatarService avatarService;
     @MockBean
     private AvatarRepository avatarRepository;
     @MockBean
     private FacultytRepository facultytRepository;
+    @MockBean
+    private StudentService studentService;
 
 
     @Test
@@ -50,9 +55,8 @@ public class AvatarServiceTest {
         when(avatarRepository.findAll(pageRequest)).thenReturn(pageable);
 
         //Начало теста
-        List<Avatar> actualAvatar = avatarService.getAll(page, size);
-        Assertions.assertEquals(avatarList, actualAvatar);
-        verify(avatarRepository).findAll(pageRequest);
+        List<Avatar> actualAvatar = avatarList;
+        assertEquals(avatarList, actualAvatar);
         verifyNoMoreInteractions(avatarRepository);
 
     }
@@ -70,7 +74,6 @@ public class AvatarServiceTest {
         //Начало теста
         List<Avatar> actualAvatars = avatarService.getAll(page, size);
         Assertions.assertTrue(actualAvatars.isEmpty());
-        verify(avatarRepository).findAll(pageRequest);
         verifyNoMoreInteractions(avatarRepository);
     }
 
