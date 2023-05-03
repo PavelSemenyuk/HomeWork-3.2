@@ -9,5 +9,6 @@ import java.util.Collection;
 public interface FacultytRepository extends JpaRepository<Faculty, Long> {
 
     Collection<Faculty> findByColor(String color);
+    Collection<Faculty> getByColorAndName (String color, String name);
 
 }

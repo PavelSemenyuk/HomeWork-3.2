@@ -61,20 +61,24 @@ public class StudentController {
     }
 
 
-   @GetMapping("/Count")
-    public long getAllCount(){
-       return studentService.getAllCount();
-   }
+    @GetMapping("/Count")
+    public long getAllCount() {
+        return studentService.getAllCount();
+    }
 
     @GetMapping("/average-age")
-    public double getAverageAge(){
+    public double getAverageAge() {
         return studentService.getAverageAge();
     }
 
-    @GetMapping("/student-last-fave")
-    public List<Student> getStudentLastFave(){
+    @GetMapping("/C-last-fave")
+    public List<Student> getStudentLastFave() {
         return studentService.getStudentLastFave();
     }
 
-
+    @GetMapping("/name")
+    public ResponseEntity<Collection<Student>> getStudentsByName(@PathVariable("name") String name){
+        Collection<Student> students=studentService.getStudentsByName(name);
+        return ResponseEntity.ok(students);
+    }
 }

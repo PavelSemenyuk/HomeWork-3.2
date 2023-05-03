@@ -25,4 +25,7 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
             "LIMIT 5",
             nativeQuery = true)
     List<Student> getStudentLastFave();
+
+
+    Collection<Student> getStudentsByName(String name);
 }

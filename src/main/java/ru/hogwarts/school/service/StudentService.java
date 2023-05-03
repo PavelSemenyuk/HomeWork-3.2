@@ -61,6 +61,10 @@ public class StudentService {
         return studentRepository.getStudentLastFave();
     }
 
+    public Collection<Student> getStudentsByName(String name){
+        return studentRepository.getStudentsByName(name);
+    }
+
 
 
 }

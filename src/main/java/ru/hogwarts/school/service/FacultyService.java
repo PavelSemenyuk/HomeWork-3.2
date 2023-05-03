@@ -42,6 +42,9 @@ public class FacultyService {
         return facultytRepository.findByColor(color);
     }
 
+    public Collection<Faculty> getByColorAndName(String color, String name) {
+        return facultytRepository.getByColorAndName(color, name);
+    }
 
 
 
