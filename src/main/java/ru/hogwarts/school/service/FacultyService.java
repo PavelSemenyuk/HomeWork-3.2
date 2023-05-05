@@ -4,16 +4,18 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import ru.hogwarts.school.model.Faculty;
+import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.repositories.FacultytRepository;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class FacultyService {
 
-    Logger logger = LoggerFactory.getLogger(FacultyService.class);
+    private static final Logger logger = LoggerFactory.getLogger(FacultyService.class);
 
-  private final FacultytRepository facultytRepository;
+    private final FacultytRepository facultytRepository;
 
     public FacultyService(FacultytRepository facultytRepository) {
         this.facultytRepository = facultytRepository;
@@ -26,7 +28,7 @@ public class FacultyService {
 
     public Faculty findFaculty(long id) {
         Optional<Faculty> facultyForFind = facultytRepository.findById(id);
-        if(facultyForFind.isEmpty()){
+        if (facultyForFind.isEmpty()) {
             logger.error("Нет такого факультета c id = " + id);
             throw new RuntimeException("Нет такого факультета");
         }
@@ -47,6 +49,7 @@ public class FacultyService {
         logger.info("Был вызван метод для получения списка всех факультетов");
         return facultytRepository.findAll();
     }
+
     public Collection<Faculty> findByColor(String color) {
         logger.info("Был вызван метод для получения цвета факультета");
         return facultytRepository.findByColor(color);
@@ -57,14 +60,15 @@ public class FacultyService {
         return facultytRepository.getByColorAndName(color, name);
     }
 
+    public String getLongestNameOfFaculty() {
+        Optional<String> longName = Optional.of(facultytRepository.findAll()
+                .stream()
+                .map(Faculty::getName)
+                .max(Comparator.comparingInt(String::length)).orElse(""));
+
+        logger.info("Был вызван метод для получения самого длинного названия факультета");
+        return longName.orElse("");
+    }
 
 
-
-//    public Faculty findByName(String name){
-//        return facultytRepository.findByNameContainsIgnoreCase(name);
-//    }
-//
-//    public Collection<Faculty> findByIdIn(long id){
-//        return facultytRepository.findByIdIs(id);
-//    }
 }

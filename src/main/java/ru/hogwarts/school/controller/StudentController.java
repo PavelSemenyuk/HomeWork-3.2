@@ -8,7 +8,9 @@ import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.service.StudentService;
 
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/student")
@@ -81,4 +83,21 @@ public class StudentController {
         Collection<Student> students=studentService.getStudentsByName(name);
         return ResponseEntity.ok(students);
     }
+
+    @GetMapping("/students/middle-age")
+    public double getStudentsMiddleAge(){
+        return studentService.averageAgeOfAllStudents();
+    }
+
+    @GetMapping("/students/firstLetterA")
+    public Collection<String> getStudentsNameWithFirstLetter_A(){
+        return studentService.getSortedAlphabetically();
+    }
+
+    @GetMapping("/sum")
+    public int getSumNum(){
+        return studentService.getSum();
+    }
+
+
 }

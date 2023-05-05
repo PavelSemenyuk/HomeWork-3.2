@@ -1,21 +1,21 @@
 package ru.hogwarts.school.service;
 
-import liquibase.pro.packaged.S;
-import org.apache.logging.log4j.message.Message;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.repositories.StudentRepository;
 
-import javax.sound.sampled.Port;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 public class StudentService {
-    Logger logger = LoggerFactory.getLogger(StudentService.class);
+    private static final Logger logger = LoggerFactory.getLogger(StudentService.class);
 
     private final StudentRepository studentRepository;
 
@@ -70,19 +70,47 @@ public class StudentService {
     }
 
     public List<Student> getStudentLastFave() {
-        logger.info("Был вызван метод для получения среднего возраста всех студентов");
+        logger.info("Был вызван метод для получения из списка пяти последних студентов");
         return studentRepository.getStudentLastFave();
     }
 
     public Collection<Student> getStudentsByName(String name) {
-        logger.info("Был вызван метод для получения из списка последних пяти студентов");
+        logger.info("Был вызван метод для получения из списка имен студентов");
         return studentRepository.getStudentsByName(name);
     }
 
-//    public Student getPort(String port) {
-//        logger.debug("??????????: {}", port);
-//        return
-//    }
+    public Collection<String> getSortedAlphabetically() {
+        Collection<String> students = studentRepository.findAll()
+                .stream()
+                .map(Student::getName)
+                .filter(name -> name.toUpperCase().startsWith("A"))
+                .sorted()
+                .collect(Collectors.toList());
+        logger.info("Был вызван метод для получения из списка  студентов в алфавитном порядке");
+        return students;
+
+    }
+
+    public double averageAgeOfAllStudents() {
+        double age = studentRepository.findAll()
+                .stream()
+                .mapToInt(Student::getAge)
+                .average().orElse(0.0);
+        logger.info("Был вызван метод для получения среднего возраста из списка студентов");
+        return age;
+    }
+
+    public int getSum() {
+
+        int sum = Stream.iterate(1, a -> a + 1)   // 0+1+2+3+4+5+6...
+                .limit(1_000_000)              // до 1кк
+                .parallel()                            // параллелим на 4 потока 0-249к; 250к-499к; 500к-749к; 750к-1000к
+                .reduce(0, (a, b) -> a + b);    // 0+1, 1+2, 3+3, 6+4, 10+5... + 0=250..250+251... +  и т д
+
+        return sum;
+
+
+    }
 
 
 }
