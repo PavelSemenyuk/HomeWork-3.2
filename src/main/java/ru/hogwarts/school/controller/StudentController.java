@@ -99,5 +99,15 @@ public class StudentController {
         return studentService.getSum();
     }
 
+    @GetMapping("/print-all")
+    public void printAllStudents() {
+        studentService.printAllStudents();
+    }
+
+    @GetMapping("/print-all-synchronc")
+    public void printAllSynchronStudents() {
+        studentService.printAllSynchronStudents();
+    }
+
 
 }

@@ -9,7 +9,6 @@ import ru.hogwarts.school.repositories.StudentRepository;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -110,6 +109,57 @@ public class StudentService {
         return sum;
 
 
+    }
+
+    private void printStudent(Student student) {
+        System.out.println(Thread.currentThread().getName() + " " + student);
+    }
+
+    public void printAllStudents() {
+        List<Student> students = studentRepository.findAll();
+        System.out.println(students);
+
+        printStudent(students.get(0));
+        printStudent(students.get(1));
+
+        new Thread(() -> {
+            try {
+                Thread.sleep(5000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            printStudent(students.get(2));
+            printStudent(students.get(3));
+        }).start();
+
+        new Thread(() -> {
+            printStudent(students.get(4));
+            printStudent(students.get(5));
+        }).start();
+    }
+
+    private void printStudentSynchron(Student student) {
+        synchronized (this) {
+            System.out.println(Thread.currentThread().getName() + " " + student);
+        }
+    }
+
+    public void printAllSynchronStudents() {
+        List<Student> students = studentRepository.findAll();
+        System.out.println(students);
+
+        printStudentSynchron(students.get(0));
+        printStudentSynchron(students.get(1));
+
+        new Thread(() -> {
+            printStudentSynchron(students.get(2));
+            printStudentSynchron(students.get(3));
+        }).start();
+
+        new Thread(() -> {
+            printStudentSynchron(students.get(4));
+            printStudentSynchron(students.get(5));
+        }).start();
     }
 
 
